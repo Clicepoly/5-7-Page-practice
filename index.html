@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Web Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('background.svg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        .logo {
+            position: absolute;
+            top: 48px;
+            left: 48px;
+            width: 124px;
+            height: 24px;
+        }
+
+        .login-container {
+            background-color: rgba(50, 51, 57, 1); /* gray-ish box */
+            width: 700px;
+            height: 320px;
+            max-width: 90%;
+            margin: 150px auto;
+
+
+            padding: 40px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-left {
+            width: 55%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .welcome {
+            margin-top: -20px;
+        }
+
+        .login-left h2, .login-left p {
+            text-align: center;
+            margin: 0 0 10px;
+        }
+
+        .form-group {
+            margin-top: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #2b2d31;
+            color: white;
+        }
+
+        .login-right {
+            width: 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-right img {
+            width: 140px;
+            height: 140px;
+            border-radius: 8px;
+        }
+
+        .qr-code {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .qr-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qr-bg {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-color: white;
+            border-radius: 6px;
+            z-index: 0;
+        }
+
+        .qr-image {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            z-index: 1;
+            object-fit: contain;
+        }
+
+        .qr-icon {
+            position: absolute;
+            width: 32px;  /* 更小 */
+            height: 32px;
+            z-index: 2;
+        }
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+
+<body>
+<img src="logo.svg" alt="Logo" class="logo">
+
+<div class="login-container">
+    <div class="login-left">
+        <div class="welcome">
+            <h2>歡迎回來！</h2>
+            <p>我們很高興又見到您了！</p>
+        </div>
+        <div class="form-group">
+            <label for="email" style="display: inline; font-size:12px">電子郵件或電話號碼</label>
+            <span style="color: deeppink; font-size:12px">*</span>
+            <input style="margin-top: 10px" type="text" id="email" placeholder="">
+        </div>
+
+        <div class="form-group">
+
+
+            <label for="password" style="display: inline; font-size:12px">密碼</label>
+            <span style="color: deeppink; font-size:12px">*</span>
+            <input style="margin-top: 10px" type="password" id="password" placeholder="">
+
+            <span style="color: deepskyblue; font-size:15px; cursor: pointer">忘記您的密碼?</span>
+
+
+
+
+        </div>
+
+        <div class="login-button">
+
+
+            <button style="width: 105%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top:18px">
+                登入
+            </button>
+
+
+
+
+        </div>
+
+        <div class="sign-up">
+
+            <div style="margin-top: 10px; margin-bottom: 1px; border-top: 1px solid #323339FF;"></div>
+
+            <span style="display: inline; font-size:15px; color: darkgray; ">需要一個帳號？</span>
+            <span style="color: deepskyblue; font-size:15px; cursor: pointer">註冊</span>
+
+
+
+
+        </div>
+
+    </div>
+
+    <div class="login-right">
+        <div class="qr-code">
+            <div class="qr-wrapper">
+                <div class="qr-bg"></div>
+                <img src="rick.png" alt="QR Code" style="scale: 1.375" class="qr-image">
+                <img src="img.png" alt="Center Icon" style="scale: 0" class="qr-icon">
+            </div>
+            <h2 class="qr-text">使用QR Code登入</h2>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    console.log("Hello, World!");
+</script>
+</body>
+</html>
