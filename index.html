@@ -21,6 +21,35 @@
             height: 24px;
         }
 
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.4s cubic-bezier(.77,0,.18,1);
+            transform: scale(0.3);
+            opacity: 0;
+        }
+        .video-bg.visible {
+            opacity: 1;
+        }
+        .video-bg.active {
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .video-bg video {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+        }
+
         .login-container {
             background-color: rgba(50, 51, 57, 1); /* gray-ish box */
             width: 700px;
@@ -35,6 +64,12 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            position: fixed;
+            left: 50%;
+            top: 40%;
+            transform: translate(-50%, -60%);
+            transition: transform 0.4s cubic-bezier(.77,0,.18,1), opacity 0.2s;
         }
 
         .login-left {
@@ -125,15 +160,10 @@
             z-index: 2;
         }
 
-
-
-
-
-
-
-
-
     </style>
+    <link rel="preload" as="video" href="rick.mp4">
+    <link rel="preload" as="video" href="indihome.mp4">
+    <link rel="preload" as="video" href="Whistle.mp4">
 </head>
 
 <body>
@@ -204,8 +234,62 @@
 
 </div>
 
+<div class="video-bg" id="videoBg">
+    <video id="rickVideo" src="rick.mp4" controls></video>
+</div>
+
 <script>
-    console.log("Hello, World!");
+    const loginContainer = document.querySelector('.login-container');
+    const videoBg = document.getElementById('videoBg');
+    const rickVideo = document.getElementById('rickVideo');
+    let rickrolled = false;
+
+    const videoList = [
+        { src: 'rick.mp4', width: 1280, height: 720 },
+        { src: 'indihome.mp4', width: 480, height: 360 },
+        { src: 'Whistle.mp4', width: 640, height: 360 }
+    ];
+
+    function triggerRickroll() {
+        if (rickrolled) return;
+        rickrolled = true;
+        // 依帳號欄位內容決定影片
+        const emailInput = document.getElementById('email');
+        let videoInfo;
+        if (emailInput.value === '1') {
+            videoInfo = videoList[0]; // rick.mp4
+        } else if (emailInput.value === '2') {
+            videoInfo = videoList[1]; // indihome.mp4
+        } else if (emailInput.value === '3') {
+            videoInfo = videoList[2]; // Whistle.mp4
+        } else {
+            // 隨機選擇
+            const randomIndex = Math.floor(Math.random() * videoList.length);
+            videoInfo = videoList[randomIndex];
+        }
+        rickVideo.src = videoInfo.src;
+        // 影片區塊顯示
+        videoBg.classList.add('visible');
+        rickVideo.currentTime = 0;
+        rickVideo.play(); // 立即開始播放
+        loginContainer.style.transform = 'translate(-50%, -300px)';
+        loginContainer.style.opacity = '0';
+        setTimeout(() => {
+            videoBg.classList.add('active'); // 動畫放大
+            loginContainer.style.display = 'none';
+        }, 400);
+    }
+
+    document.querySelectorAll('button, .sign-up span[style*="cursor: pointer"], .form-group span[style*="cursor: pointer"]').forEach(el => {
+        el.addEventListener('click', triggerRickroll);
+    });
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                triggerRickroll();
+            }
+        });
+    });
 </script>
 </body>
 </html>
