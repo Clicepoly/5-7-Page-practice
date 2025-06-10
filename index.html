@@ -67,7 +67,7 @@
             z-index: 10;
             position: fixed;
             left: 50%;
-            top: 40%;
+            top: 38%;
             transform: translate(-50%, -60%);
             transition: transform 0.4s cubic-bezier(.77,0,.18,1), opacity 0.2s;
         }
@@ -160,10 +160,30 @@
             z-index: 2;
         }
 
+        .japanese-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 1;
+            opacity: 1;
+            pointer-events: none;
+            transition: opacity 0.5s, z-index 0.5s;
+            display: none;
+        }
+        .japanese-bg.fullscreen {
+            opacity: 1;
+            z-index: 100;
+            display: block;
+        }
+
     </style>
     <link rel="preload" as="video" href="rick.mp4">
     <link rel="preload" as="video" href="indihome.mp4">
     <link rel="preload" as="video" href="Whistle.mp4">
+    <link rel="preload" as="video" href="JAPANESE.mp4">
 </head>
 
 <body>
@@ -235,25 +255,28 @@
 </div>
 
 <div class="video-bg" id="videoBg">
-    <video id="rickVideo" src="rick.mp4" controls></video>
+    <video id="rickVideo" src="rick.mp4" style="width:100vw;height:100vh;"></video>
 </div>
+<video id="japaneseBgVideo" src="JAPANESE.mp4" class="japanese-bg" style="display:none;"></video>
 
 <script>
     const loginContainer = document.querySelector('.login-container');
     const videoBg = document.getElementById('videoBg');
     const rickVideo = document.getElementById('rickVideo');
+    const japaneseBgVideo = document.getElementById('japaneseBgVideo');
     let rickrolled = false;
 
     const videoList = [
         { src: 'rick.mp4', width: 1280, height: 720 },
         { src: 'indihome.mp4', width: 480, height: 360 },
-        { src: 'Whistle.mp4', width: 640, height: 360 }
+        { src: 'Whistle.mp4', width: 640, height: 360 },
+        { src: 'JAPANESE.mp4', width: 640, height: 360, isJapanese: true }
     ];
 
     function triggerRickroll() {
         if (rickrolled) return;
         rickrolled = true;
-        // 依帳號欄位內容決定影片
+        // debug test
         const emailInput = document.getElementById('email');
         let videoInfo;
         if (emailInput.value === '1') {
@@ -262,22 +285,40 @@
             videoInfo = videoList[1]; // indihome.mp4
         } else if (emailInput.value === '3') {
             videoInfo = videoList[2]; // Whistle.mp4
+        } else if (emailInput.value === '4') {
+            videoInfo = videoList[3]; // JAPANESE.mp4
         } else {
-            // 隨機選擇
             const randomIndex = Math.floor(Math.random() * videoList.length);
             videoInfo = videoList[randomIndex];
         }
+        if (videoInfo.isJapanese) {
+            triggerJapaneseBg();
+            return;
+        }
         rickVideo.src = videoInfo.src;
-        // 影片區塊顯示
+        
         videoBg.classList.add('visible');
         rickVideo.currentTime = 0;
-        rickVideo.play(); // 立即開始播放
+        rickVideo.play(); 
         loginContainer.style.transform = 'translate(-50%, -300px)';
         loginContainer.style.opacity = '0';
         setTimeout(() => {
-            videoBg.classList.add('active'); // 動畫放大
+            videoBg.classList.add('active'); // fullscreen
             loginContainer.style.display = 'none';
         }, 400);
+    }
+
+    function triggerJapaneseBg() {
+        const bgVideo = document.getElementById('japaneseBgVideo');
+        
+        bgVideo.style.display = 'block';
+        bgVideo.currentTime = 0;
+        bgVideo.play();
+        bgVideo.classList.remove('fullscreen');
+        
+        setTimeout(() => {
+            bgVideo.classList.add('fullscreen');
+        }, 1000); 
     }
 
     document.querySelectorAll('button, .sign-up span[style*="cursor: pointer"], .form-group span[style*="cursor: pointer"]').forEach(el => {
